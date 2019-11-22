@@ -5,7 +5,7 @@ export default {
     page404: '404',
     errorLog: '错误日志',
     theme: '换肤',
-    permission: '权限管理',
+    permission: '权限121管理',
     user: '用户管理',
     dept: '部门管理',
     member: '用户管理',
@@ -37,7 +37,7 @@ export default {
     security: '安全设置'
   },
   login: {
-    title: '系统登录',
+    title: '系统11登录',
     logIn: '登录',
     username: '账号',
     password: '密码',
@@ -48,7 +48,7 @@ export default {
     code: '验证码',
     googleAuths: '两步验证・谷歌身份验证器',
     ldap: 'LDAP',
-    standard: '常规登录'
+    standard: '常规11登录'
   },
   documentation: {
     documentation: '文档',

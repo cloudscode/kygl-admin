@@ -26,14 +26,18 @@ database:
   driver: mysql
   mysql:
     charset: utf8
-    host: ${MYSQL_HOST}:${MYSQL_PORT}
-    name: ${MYSQL_DB}
-    password: ${MYSQL_PASSWORD}
+    # host: ${MYSQL_HOST}:${MYSQL_PORT}
+    # name: ${MYSQL_DB}
+    # password: ${MYSQL_PASSWORD}
+    # user: ${MYSQL_USERNAME}
+    host: 127.0.0.1:3306
+    name: zeus
+    password: Snow09lj
+    user: root
     pool:
       max: 20
       min: 5
-    ssl: false
-    user: ${MYSQL_USERNAME}
+    ssl: false   
   sqlite:
     dsn: data/zeus.db
 dingtalk:
