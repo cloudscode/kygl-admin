@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column :label="$t('disquision.publishing_time')">
         <template slot-scope="scope">
-         {{ scope.row.publishingdate | parseTime('{y}-{m}-{d} {h}:{i}') }}
+          {{ scope.row.publishingdate | parseTime('{y}-{m}-{d} {h}:{i}') }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('disquision.public_name')">
