@@ -485,5 +485,35 @@ export const asyncRouterMap = [
       }
     ]
   },
-  { path: '*', permission: false, redirect: '/404', hidden: true }
+  { path: '*', permission: false, redirect: '/404', hidden: true },
+  {
+    path: '/research/result',
+    component: Layout,
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'researchResult',
+      icon: 'edit'
+      // roles: ['/logs']
+    },
+    children: [
+      {
+        path: 'disquision',
+        component: () => import('@/views/research/result/disquision'),
+        name: 'researchResult',
+        meta: {
+          title: 'disquision',
+          icon: 'lock'
+        }
+      },
+      {
+        path: 'disquision',
+        component: () => import('@/views/research/result/disquision'),
+        name: 'disquision',
+        meta: {
+          title: 'disquision',
+          icon: 'lock'
+        }
+      }
+    ]
+  }
 ]

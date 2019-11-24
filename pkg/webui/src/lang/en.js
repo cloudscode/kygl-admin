@@ -18,7 +18,9 @@ export default {
     log_error: 'Error Log',
     personal: 'Personal Center',
     psw: 'Reset Password',
-    third: 'third'
+    third: 'third',
+    researchResult: 'research result',
+    disquision: 'disquision'
   },
   navbar: {
     logOut: 'Log Out',
@@ -130,5 +132,16 @@ export default {
     status: 'Status',
     date: 'Create Date',
     actions: 'Action'
+  },
+  disquision: {
+    id: 'ID',
+    title: 'Thesis title',
+    affiliationUnit: 'Affiliation unit',
+    author: 'First author',
+    publishingTime: 'Publishing Time',
+    publicName: 'Publication name',
+    thesisType: 'Thesis type',
+    publicationLevel: 'Publication Level',
+    approvalStatus: 'Approval status'
   }
 }

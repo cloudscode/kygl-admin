@@ -105,3 +105,10 @@ func failValidate(c *gin.Context, msg string) {
 		"detail": msg,
 	})
 }
+
+func Resp(c *gin.Context, data map[string]interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"data": data,
+	})
+}

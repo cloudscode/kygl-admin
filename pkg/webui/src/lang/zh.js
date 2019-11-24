@@ -5,7 +5,7 @@ export default {
     page404: '404',
     errorLog: '错误日志',
     theme: '换肤',
-    permission: '权限121管理',
+    permission: '权限管理',
     user: '用户管理',
     dept: '部门管理',
     member: '用户管理',
@@ -22,7 +22,9 @@ export default {
     personal: '个人中心',
     security: '安全设置',
     psw: '修改密码',
-    third: '第三方绑定'
+    third: '第三方绑定',
+    researchResult: '科研成果',
+    disquision: '论文成果'
   },
   navbar: {
     logOut: '退出登录',
@@ -244,5 +246,25 @@ export default {
     operation_result: '操作结果',
     operation_content: '操作内容',
     operation_time: '操作时间'
+  },
+  disquision: {
+    id: 'ID',
+    title: '论文题目',
+    affiliation_unit: '所属单位',
+    author: '第一作者',
+    publishing_time: '发表/出版时间',
+    public_name: '刊物名称',
+    thesis_type: '论文类型',
+    publication_level: '刊物级别',
+    approval_status: '审核状态',
+    publication_type: '期号',
+    volume_no: '卷号',
+    word_length: '字数',
+    knowledge_class: '学科门类',
+    first_knowledge: '一级学科',
+    source: '成果来源',
+    publishing_range: '发表范围',
+    issn_num: 'ＩＳＳＮ号',
+    cn_num: 'ＣＮ号'
   }
 }

@@ -1,15 +1,18 @@
 package router
 
 import (
-	"github.com/appleboy/gin-jwt/v2"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	"github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	_ "zeus/docs"
 	"zeus/pkg/api/controllers"
 	"zeus/pkg/api/domain/account"
 	"zeus/pkg/api/middleware"
+
+	jwt "github.com/appleboy/gin-jwt/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	researchControllers "zeus/pkg/api/business/research/controllers"
 )
 
 var jwtAuth *jwt.GinJWTMiddleware
@@ -156,4 +159,12 @@ func SetUp(e *gin.Engine, cors bool) {
 		e.Static("/static", "./pkg/webui/dist/static")   // 添加资源路径
 		e.StaticFile("/", "./pkg/webui/dist/index.html") //前端接口
 	}
+
+	//Disquision
+	disquisionController := &researchControllers.DisquisionController{}
+	v1.GET("/disquisions", disquisionController.List)
+	// v1.GET("/roles/:id", roleController.Get)
+	// v1.POST("/roles", roleController.Create)
+	// v1.PUT("/roles/:id", roleController.Edit)
+	// v1.DELETE("/roles/:id", roleController.Delete)
 }
