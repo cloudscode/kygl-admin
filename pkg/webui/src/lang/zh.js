@@ -24,7 +24,8 @@ export default {
     psw: '修改密码',
     third: '第三方绑定',
     researchResult: '科研成果',
-    disquision: '论文成果'
+    disquision: '论文成果',
+    dictionary: '字典管理'
   },
   navbar: {
     logOut: '退出登录',
@@ -266,5 +267,9 @@ export default {
     publishing_range: '发表范围',
     issn_num: 'ＩＳＳＮ号',
     cn_num: 'ＣＮ号'
+  },
+  dictionaries: {
+    id: 'ID',
+    name: '名称'
   }
 }

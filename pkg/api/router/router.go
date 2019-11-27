@@ -12,6 +12,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
+	codelibraryItemControllers "zeus/pkg/api/business/dictionary/controllers"
 	researchControllers "zeus/pkg/api/business/research/controllers"
 )
 
@@ -167,4 +168,8 @@ func SetUp(e *gin.Engine, cors bool) {
 	// v1.POST("/roles", roleController.Create)
 	// v1.PUT("/roles/:id", roleController.Edit)
 	// v1.DELETE("/roles/:id", roleController.Delete)
+
+	//CodelibraryItem
+	codelibraryItemController := &codelibraryItemControllers.CodelibraryItemController{}
+	v1.GET("/dictionary/items", codelibraryItemController.List)
 }

@@ -515,5 +515,26 @@ export const asyncRouterMap = [
         }
       }
     ]
+  },
+  {
+    path: '/dictionary/dictionary',
+    component: Layout,
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'dictionary',
+      icon: 'edit'
+      // roles: ['/logs']
+    },
+    children: [
+      {
+        path: 'dictionary',
+        component: () => import('@/views/dictionary/dictionary'),
+        name: 'dictionary',
+        meta: {
+          title: 'dictionary',
+          icon: 'lock'
+        }
+      }
+    ]
   }
 ]
