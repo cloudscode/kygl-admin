@@ -528,7 +528,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'dictionary',
-        component: () => import('@/views/dictionary/dictionary'),
+        component: () => import('@/views/dictionary/items'),
         name: 'dictionary',
         meta: {
           title: 'dictionary',

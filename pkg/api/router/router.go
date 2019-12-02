@@ -172,4 +172,9 @@ func SetUp(e *gin.Engine, cors bool) {
 	//CodelibraryItem
 	codelibraryItemController := &codelibraryItemControllers.CodelibraryItemController{}
 	v1.GET("/dictionary/items", codelibraryItemController.List)
+	v1.GET("/dictionary/items/:id", codelibraryItemController.Get)
+	v1.POST("/dictionary/items", codelibraryItemController.Create)
+	v1.PUT("/dictionary/items/:id", codelibraryItemController.Edit)
+	v1.DELETE("/dictionary/items/:id", codelibraryItemController.Delete)
+
 }

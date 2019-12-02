@@ -2,6 +2,8 @@ package result
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
+	"strings"
 	"zeus/pkg/api/business/dictionary/dto"
 	model "zeus/pkg/api/business/dictionary/model"
 	baseDao "zeus/pkg/api/dao"
@@ -11,75 +13,76 @@ import (
 type CodelibraryItem struct {
 }
 
-var tabCodelibrary string = "tab_codelibrary"
+// GetMenusByIds
+func (m CodelibraryItem) GetMenusByIds(ids string) []model.CodelibraryItem {
+	var menus []model.CodelibraryItem
+	db := baseDao.GetDb()
+	db.Where("id in (?) and menu_type=1", strings.Split(ids, ",")).Find(&menus)
+	return menus
+}
 
-//Get - get single CodelibraryItem info
-func (u CodelibraryItem) Get(id int, preload bool) model.CodelibraryItem {
-	var codelibraryItem model.CodelibraryItem
+// GetMenusPermByIds - get permissions in menu table
+func (m CodelibraryItem) GetMenusPermByIds(ids string) []model.CodelibraryItem {
+	var menus []model.CodelibraryItem
+	db := baseDao.GetDb()
+	db.Where("id in (?) and menu_type=2", strings.Split(ids, ",")).Find(&menus)
+	return menus
+}
+
+// GetByAlias - get row by alias
+func (m CodelibraryItem) GetByAlias(alias string) model.CodelibraryItem {
+	var menu model.CodelibraryItem
+	db := baseDao.GetDb()
+	db.Where("alias = ? and menu_type=2", alias).First(&menu)
+	return menu
+}
+
+//Get - get single menu info
+func (m CodelibraryItem) Get(id int, preload bool) model.CodelibraryItem {
+	var menu model.CodelibraryItem
 	db := baseDao.GetDb()
 	if preload {
-		db = db.Preload(tabCodelibrary)
+		db = db.Preload("tab_codelibrary_item")
 	}
-	db.Where("id = ?", id).First(&codelibraryItem)
-	return codelibraryItem
+	db.Where("id = ?", id).First(&menu)
+	return menu
 }
 
-// List - CodelibraryItem list
-func (u CodelibraryItem) List(listDto baseDto.GeneralListDto) ([]model.CodelibraryItem, int64) {
-	var codelibraryItem []model.CodelibraryItem
+//GetSubMenus
+func (m CodelibraryItem) GetSubMenus(id int) []model.CodelibraryItem {
+	var menus []model.CodelibraryItem
+	db := baseDao.GetDb()
+	db.Where("parent_id=?", id).First(&menus)
+	return menus
+}
+
+// List
+func (m CodelibraryItem) List(treeDto baseDto.GeneralTreeDto) ([]model.CodelibraryItem, int64) {
+	var menus []model.CodelibraryItem
 	var total int64
 	db := baseDao.GetDb()
-	for sk, sv := range baseDto.TransformSearch(listDto.Q, dto.CodelibraryItemListSearchMapping) {
+	for sk, sv := range baseDto.TransformSearch(treeDto.Q, dto.CodelibraryItemListSearchMapping) {
 		db = db.Where(fmt.Sprintf("%s = ?", sk), sv)
 	}
-	db.Preload(tabCodelibrary).Offset(listDto.Skip).Limit(listDto.Limit).Find(&codelibraryItem)
+	db.Preload("tab_codelibrary_item").Order(" sortvalue asc").Find(&menus)
 	db.Model(&model.CodelibraryItem{}).Count(&total)
-	//fmt.Printf(">>>>>>>>>>>>" + codelibraryItem[0].Name + "<<<<<<<<<<<<<<<<")
-	return codelibraryItem, total
+	return menus, total
 }
 
-// // GetRolesByIds
-// func (Role) GetRolesByIds(ids string) []model.Role {
-// 	var roles []model.Role
-// 	db := GetDb()
-// 	db.Where("id in (?)", strings.Split(ids, ",")).Find(&roles)
-// 	return roles
-// }
+// Create - new menu
+func (m CodelibraryItem) Create(menu *model.CodelibraryItem) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Save(menu)
+}
 
-// // GetRolesByNames
-// func (Role) GetRolesByNames(names []string) []model.Role {
-// 	var roles []model.Role
-// 	db := GetDb()
-// 	db.Where("role_name in (?)", names).Find(&roles)
-// 	return roles
-// }
+// Update - update menu
+func (m CodelibraryItem) Update(menu *model.CodelibraryItem, ups map[string]interface{}) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Model(menu).Update(ups)
+}
 
-// //Get - get single roel infoD
-// func (u Role) GetByName(name string) model.Role {
-// 	var role model.Role
-// 	db.Where("role_name = ?", name).Preload("Domain").First(&role)
-// 	return role
-// }
-
-// // Create - new role
-// func (r Role) Create(role *model.Role) *gorm.DB {
-// 	var row model.Role
-// 	db := GetDb()
-// 	db.Where("name = ? or role_name = ?", role.Name, role.RoleName).First(&row)
-// 	if row.Id > 0 {
-// 		return nil
-// 	}
-// 	return db.Create(role)
-// }
-
-// // Update - update role
-// func (r Role) Update(role *model.Role, ups map[string]interface{}) *gorm.DB {
-// 	db := GetDb()
-// 	return db.Model(role).Update(ups)
-// }
-
-// // Delete - delete role
-// func (r Role) Delete(role *model.Role) *gorm.DB {
-// 	db := GetDb()
-// 	return db.Delete(role)
-// }
+// Delete - delete menu
+func (m CodelibraryItem) Delete(menu *model.CodelibraryItem) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Delete(menu)
+}

@@ -112,3 +112,20 @@ func Resp(c *gin.Context, data map[string]interface{}) {
 		"data": data,
 	})
 }
+
+func Fail(c *gin.Context, errs *ControllerError) {
+	//currentLang,_ := c.Cookie("lang")
+	//currentLang := GetLang
+	errs.Message = i18n.Tr(middleware.GetLang(), errs.Langkey)
+	c.JSON(http.StatusOK, gin.H{
+		"code":     errs.Code,
+		"msg":      errs.Message,
+		"moreinfo": errs.Moreinfo,
+	})
+}
+func Ok(c *gin.Context, langKey string) {
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  i18n.Tr(middleware.GetLang(), langKey),
+	})
+}

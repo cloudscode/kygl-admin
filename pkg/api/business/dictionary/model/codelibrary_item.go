@@ -1,13 +1,17 @@
 package model
 
+import (
+	"time"
+)
+
 type CodelibraryItem struct {
-	Id            string `json:"id" xorm:"not null pk index VARCHAR(16)"`
-	Name          string `json:"name" xorm:"index VARCHAR(150)"`
-	Codelibraryid string `json:"codelibraryid" xorm:"not null pk VARCHAR(16)"`
-	Parentid      string `json:"parentid" xorm:"index VARCHAR(16)"`
-	Flagdefault   int    `json:"flagdefault" xorm:"not null INT(11)"`
-	Flaglevel     int    `json:"flaglevel" xorm:"index INT(11)"`
-	Sortvalue     int    `json:"sortvalue" xorm:"not null INT(11)"`
+	Id             int       `json:"id"`
+	Name           string    `json:"name"`
+	ParentId       int       `json:"parent_id"`
+	Sortvalue      int       `json:"sortvalue"`
+	CreateTime     time.Time `gorm:"type:time;column:create_time;not null;default:CURRENT_TIMESTAMP" json:"created_time,omitempty" example:"2019-07-10 0:39"`
+	LastUpdateTime time.Time `gorm:"type:time;column:last_update_time;not null;default:CURRENT_TIMESTAMP ON UPDATE" json:"last_update_time,omitempty" example:"2019-07-10 0:39"`
+	Deleted        int       `json:"deleted"`
 }
 
 func (CodelibraryItem) TableName() string {

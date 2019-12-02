@@ -1,9 +1,12 @@
 package service
 
 import (
+	"time"
 	dao "zeus/pkg/api/business/dictionary/dao"
-	"zeus/pkg/api/business/dictionary/model"
+	"zeus/pkg/api/business/dictionary/dto"
+	model "zeus/pkg/api/business/dictionary/model"
 	baseDto "zeus/pkg/api/dto"
+	"zeus/pkg/api/log"
 )
 
 var codelibraryItemDao = dao.CodelibraryItem{}
@@ -12,129 +15,92 @@ var codelibraryItemDao = dao.CodelibraryItem{}
 type CodelibraryItemService struct {
 }
 
-// List - users list with pagination
-func (CodelibraryItemService) List(dto baseDto.GeneralListDto) ([]model.CodelibraryItem, int64) {
-	return codelibraryItemDao.List(dto)
+// InfoOfId - get menu info by id
+func (CodelibraryItemService) InfoOfId(dto baseDto.GeneralGetDto) model.CodelibraryItem {
+	return codelibraryItemDao.Get(dto.Id, true)
 }
 
-// // AssignPermission - assign permissions
-// func (RoleService) AssignPermission(roleId int, menuIds string) {
-// 	roleData := roleDao.Get(roleId, true)
-// 	menus := menuDao.GetMenusPermByIds(menuIds)
-// 	if len(menus) > 0 {
-// 		var policies [][]string
-// 		for _, m := range menus {
-// 			if m.Url == "" && m.Perms != "" {
-// 				//Do not allow comma which would cause panic error with casbin rules
-// 				m.Perms = strings.Replace(m.Perms, ",", "|", -1)
-// 				policies = append(policies, []string{roleData.RoleName, m.Perms, "*", roleData.Domain.Code})
-// 			}
-// 		}
-// 		role.OverwritePerm(roleData.RoleName, roleData.Domain.Code, policies)
-// 	} else {
-// 		role.DeletePerm(roleData.RoleName)
-// 	}
-// }
+// List - users list with pagination
+func (CodelibraryItemService) List(treeDto baseDto.GeneralTreeDto) ([]model.CodelibraryItem, int64) {
+	return codelibraryItemDao.List(treeDto)
+}
 
-// // assign data permission
-// func (rs RoleService) AssignDataPerm(roleId int, dataPermIds string) error {
-// 	var (
-// 		dtos           []dto.AssignDataPermDto
-// 		dtoOne         dto.AssignDataPermDto
-// 		oldDataPermIds []int
-// 		dataIds        []string
-// 	)
+// Create - create a menu item
+func (ms CodelibraryItemService) Create(codelibraryItemCreateDto dto.CodelibraryItemCreateDto) model.CodelibraryItem {
+	codelibraryItemCreateModel := model.CodelibraryItem{
+		Name:           codelibraryItemCreateDto.Name,
+		ParentId:       codelibraryItemCreateDto.ParentId,
+		Sortvalue:      codelibraryItemCreateDto.Sortvalue,
+		CreateTime:     time.Now(),
+		LastUpdateTime: time.Now(),
+		Deleted:        0,
+	}
+	c := codelibraryItemDao.Create(&codelibraryItemCreateModel)
+	if c.Error != nil {
+		log.Error(c.Error.Error())
+	}
+	// for _, alias := range strings.Split(codelibraryItemCreateDto.Alias, ",") {
+	// 	menuPermAliasDao.Create(&model.MenuPermAlias{
+	// 		Perms:       codelibraryItemCreateDto.Perms,
+	// 		Alias:       alias,
+	// 		DomainId:    codelibraryItemCreateDto.DomainId,
+	// 		CreatedTime: time.Now().Unix(),
+	// 		UpdatedTime: time.Now().Unix(),
+	// 	})
+	// }
+	return codelibraryItemCreateModel
+}
 
-// 	// Get the old data permission list of the current role
-// 	oldRoleDataPerms, _ := roleDataPermDao.GetByRoleId(roleId)
+// Update
+func (ms CodelibraryItemService) Update(codelibraryItemCreateDto dto.CodelibraryItemEditDto) int64 {
+	codelibraryItemCreateModel := codelibraryItemDao.Get(codelibraryItemCreateDto.Id, false)
+	c := codelibraryItemDao.Update(&codelibraryItemCreateModel, map[string]interface{}{
+		"name":      codelibraryItemCreateDto.Name,
+		"parent_id": codelibraryItemCreateDto.ParentId,
+	})
+	// 1.Remove all alias
+	//menuPermAliasDao.Delete(model.MenuPermAlias{Perms: codelibraryItemCreateModel.Perms, DomainId: codelibraryItemCreateModel.DomainId})
+	// 2.Save new alias again
+	// for _, alias := range strings.Split(codelibraryItemCreateDto.Alias, ",") {
+	// 	menuPermAliasDao.Create(&model.MenuPermAlias{
+	// 		Perms:       codelibraryItemCreateDto.Perms,
+	// 		Alias:       alias,
+	// 		DomainId:    codelibraryItemCreateDto.DomainId,
+	// 		CreatedTime: time.Now().Unix(),
+	// 		UpdatedTime: time.Now().Unix(),
+	// 	})
+	// }
+	return c.RowsAffected
+}
 
-// 	// Delete all old data permissions for this role and insert new ones
-// 	if len(oldRoleDataPerms) > 0 {
-// 		for _, v := range oldRoleDataPerms {
-// 			oldDataPermIds = append(oldDataPermIds, v.Id)
-// 		}
-// 		_ = roleDataPermDao.DeleteMulti(roleId, oldDataPermIds)
-// 	}
-// 	// Insert new data permissions
-// 	dataIds = strings.Split(dataPermIds, ",")
-// 	if len(dataIds) > 0 {
-// 		for _, v := range dataIds {
-// 			tmpId, _ := strconv.Atoi(v)
-// 			dtoOne.RoleId = roleId
-// 			dtoOne.DataPermId = tmpId
-// 			dtos = append(dtos, dtoOne)
-// 		}
-// 		_ = roleDataPermDao.InsertMulti(dtos)
-// 	}
-
-// 	return nil
-// }
-
-// // Create - create a new role
-// func (rs RoleService) Create(dto dto.RoleCreateDto) (model.Role, error) {
-// 	roleModel := model.Role{
-// 		Name:       dto.Name,
-// 		RoleName:   dto.RoleName,
-// 		Remark:     dto.Remark,
-// 		DomainId:   dto.DomainId,
-// 		MenuIds:    dto.MenuIds,
-// 		MenuIdsEle: dto.MenuIdsEle,
-// 	}
-// 	c := roleDao.Create(&roleModel)
-// 	if c == nil {
-// 		return model.Role{}, errors.New("Duplicated role")
-// 	} else {
-// 		if c.Error != nil {
-// 			log.Error(c.Error.Error())
-// 			return model.Role{}, c.Error
-// 		}
-// 		if dto.MenuIds != "" {
-// 			rs.AssignPermission(roleModel.Id, dto.MenuIds)
-// 		}
-// 		// insert data permissions
-// 		if len(dto.DataPermIds) > 0 {
-// 			_ = rs.AssignDataPerm(roleModel.Id, dto.DataPermIds)
-// 		}
-// 	}
-// 	return roleModel, nil
-// }
-
-// // Update - update role's information
-// func (rs RoleService) Update(roleDto dto.RoleEditDto) int64 {
-// 	c := roleDao.Update(&model.Role{Id: roleDto.Id}, map[string]interface{}{
-// 		"name":         roleDto.Name,
-// 		"remark":       roleDto.Remark,
-// 		"domain_id":    roleDto.DomainId,
-// 		"menu_ids":     roleDto.MenuIds,
-// 		"menu_ids_ele": roleDto.MenuIdsEle,
-// 	})
-// 	rs.AssignPermission(roleDto.Id, roleDto.MenuIds)
-// 	if roleDto.DataPermIds != "" {
-// 		_ = rs.AssignDataPerm(roleDto.Id, roleDto.DataPermIds)
-// 	}
-
-// 	return c.RowsAffected
-// }
-
-// // Delete - delete role
-// func (rl RoleService) Delete(dto dto.GeneralDelDto) int64 {
-// 	roleModel := roleDao.Get(dto.Id, false)
-// 	if roleModel.Id < 1 {
-// 		return -1
-// 	}
-// 	//1. delete role
-// 	c := roleDao.Delete(&roleModel)
-// 	if c.RowsAffected > 0 {
-// 		//2. delete role's policies
-// 		role.DeletePerm(roleModel.RoleName)
-
-// 		//3. delete role's data permissions
-// 		_ = roleDataPermDao.DeleteByRoleId(dto.Id)
-// 	}
-// 	return c.RowsAffected
-// }
-
-// // 通过角色id获取数据权限列表
-// func (rl RoleService) GetRoleDataPermsByRoleId(roleId int) ([]model.GetByRoleIdData, int64) {
-// 	return roleDataPermDao.GetByRoleId(roleId)
-// }
+// Delete - delete menu
+func (ms CodelibraryItemService) Delete(dto baseDto.GeneralDelDto) int64 {
+	codelibraryItemModel := model.CodelibraryItem{
+		Id: dto.Id,
+	}
+	c := codelibraryItemDao.Delete(&codelibraryItemModel)
+	return c.RowsAffected
+	// codelibraryItemCreateModel := codelibraryItemDao.Get(dto.Id, false)
+	// if codelibraryItemCreateModel.Id < 1 {
+	// 	return -1
+	// }
+	// //If menu has sub menus , stop removing node
+	// // subMenus := codelibraryItemDao.GetSubMenus(dto.Id)
+	// // if len(subMenus) > 0 {
+	// // 	return -2
+	// // }
+	// // //1. delete menu
+	// // perms := codelibraryItemCreateModel.Perms
+	// // c := codelibraryItemDao.Delete(&codelibraryItemCreateModel)
+	// // if c.RowsAffected > 0 {
+	// // 	//2. delete related policies
+	// // 	//Empty perms puts in delete method would cause all casbin rules removed!
+	// // 	if perms != "" {
+	// // 		perm.DelFilteredPerm(1, perms)
+	// // 	}
+	// // 	// Remove all alias
+	// // 	menuPermAliasDao.Delete(model.MenuPermAlias{Perms: codelibraryItemCreateModel.Perms, DomainId: codelibraryItemCreateModel.DomainId})
+	// // }
+	// //return c.RowsAffected
+	// return 0
+}

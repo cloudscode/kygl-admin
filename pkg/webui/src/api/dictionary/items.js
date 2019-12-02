@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import qs from 'qs'
 
-export function fetchDictionaryItemList(query) {
+export function fetchDictionaryItemsList(query) {
   return request({
     url: 'v1/dictionary/items',
     method: 'get',
@@ -9,17 +9,9 @@ export function fetchDictionaryItemList(query) {
   })
 }
 
-export function fetchRoleList(query) {
+export function fetchDictionaryItems(id) {
   return request({
-    url: 'v1/roles',
-    method: 'get',
-    params: query
-  })
-}
-
-export function fetchRole(id) {
-  return request({
-    url: 'role/show',
+    url: 'v1/dictionary/items',
     method: 'get',
     params: {
       id
@@ -27,27 +19,26 @@ export function fetchRole(id) {
   })
 }
 
-export function createRole(data) {
+export function createDictionaryItems(data) {
   return request({
-    url: 'v1/roles',
+    url: 'v1/dictionary/items',
     method: 'post',
     data: qs.stringify(data)
   })
 }
 
-export function updateRole(data) {
+export function updateDictionaryItems(data) {
   return request({
-    url: 'v1/roles/' + data.id,
+    url: 'v1/dictionary/items/' + data.id,
     method: 'put',
     data: qs.stringify(data)
   })
 }
 
-export function deleteRole(data) {
+export function deleteDictionaryItems(data) {
   return request({
-    url: 'v1/roles/' + data.id,
+    url: 'v1/dictionary/items/' + data.id,
     method: 'delete',
     data: qs.stringify(data)
   })
 }
-
