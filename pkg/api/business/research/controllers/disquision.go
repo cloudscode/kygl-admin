@@ -1,13 +1,19 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"zeus/pkg/api/business/research/dto"
 	"zeus/pkg/api/business/research/service"
 	baseController "zeus/pkg/api/controllers"
-	"zeus/pkg/api/dto"
+	baseDto "zeus/pkg/api/dto"
+	"zeus/pkg/api/log"
+	baseService "zeus/pkg/api/service"
 )
 
 var disquisionService = service.DisquisionService{}
+var logService = baseService.LogService{}
 
 type DisquisionController struct {
 	baseController.BaseController
@@ -22,7 +28,7 @@ type DisquisionController struct {
 // @Success 200 {string} json "{"code":200,"data":{"result":[...],"total":1}}"
 // @Router /v1/roles [get]
 func (r *DisquisionController) List(c *gin.Context) {
-	var listDto dto.GeneralListDto
+	var listDto baseDto.GeneralListDto
 	if r.BindAndValidate(c, &listDto) {
 		data, total := disquisionService.List(listDto)
 		baseController.Resp(c, map[string]interface{}{
@@ -32,103 +38,103 @@ func (r *DisquisionController) List(c *gin.Context) {
 	}
 }
 
-// // @Tags Role
-// // @Summary 新增角色
-// // @Security ApiKeyAuth
-// // @Produce  json
-// // @Success 200 {string} json "{"code":200,"data":{"id":1}}"
-// // @Router /v1/roles [post]
-// func (r *RoleController) Create(c *gin.Context) {
-// 	var roleDto dto.RoleCreateDto
-// 	if r.BindAndValidate(c, &roleDto) {
-// 		newRole, err := roleService.Create(roleDto)
-// 		if err != nil {
-// 			ErrAddFail.Moreinfo = err.Error()
-// 			fail(c, ErrAddFail)
-// 			ErrAddFail.Moreinfo = ""
-// 			return
-// 		}
-// 		// insert operation log
-// 		b, _ := json.Marshal(roleDto)
-// 		orLogDto := dto.OperationLogDto{
-// 			UserId:           int(c.Value("userId").(float64)),
-// 			RequestUrl:       c.Request.RequestURI,
-// 			OperationMethod:  c.Request.Method,
-// 			Params:           string(b),
-// 			Ip:               c.ClientIP(),
-// 			IpLocation:       "", //TODO...待接入获取ip位置服务
-// 			OperationResult:  "success",
-// 			OperationSuccess: 1,
-// 			OperationContent: "Create Role",
-// 		}
-// 		_ = logService.InsertOperationLog(&orLogDto)
-// 		resp(c, map[string]interface{}{
-// 			"result": newRole,
-// 		})
-// 	}
-// }
+// @Tags Users
+// @Summary 新增用户
+// @Security ApiKeyAuth
+// @Produce  json
+// @Success 200 {string} json "{"code":200,"data":{"id":1}}"
+// @Router /v1/users?limit=20&offset=0 [get]
+func (u *DisquisionController) Create(c *gin.Context) {
+	var userDto dto.DisquisionCreateDto
+	if u.BindAndValidate(c, &userDto) {
+		user, err := disquisionService.Create(userDto)
+		if err != nil {
+			baseController.Fail(c, baseController.ErrInputData)
+			return
+		}
+		// TODO insert ldap user
+		// insert operation log
+		b, _ := json.Marshal(userDto)
+		orLogDto := baseDto.OperationLogDto{
+			UserId:           int(c.Value("userId").(float64)),
+			RequestUrl:       c.Request.RequestURI,
+			OperationMethod:  c.Request.Method,
+			Params:           string(b),
+			Ip:               c.ClientIP(),
+			IpLocation:       "", //TODO...待接入获取ip位置服务
+			OperationResult:  "success",
+			OperationSuccess: 1,
+			OperationContent: "Create User",
+		}
+		_ = logService.InsertOperationLog(&orLogDto)
+		baseController.Resp(c, map[string]interface{}{
+			"result": user,
+		})
+	}
+}
 
-// // @Summary 更新角色信息
-// // @Tags Role
-// // @Security ApiKeyAuth
-// // @Produce  json
-// // @Success 200 {string} json "{"code":200,"data":{"result":[...],"total":1}}"
-// // @Router /v1/roles/:id [put]
-// // Edit - u of crud
-// func (r *RoleController) Edit(c *gin.Context) {
-// 	var roleDto dto.RoleEditDto
-// 	if r.BindAndValidate(c, &roleDto) {
-// 		affected := roleService.Update(roleDto)
-// 		if affected < 0 {
-// 			fail(c, ErrNoRecord)
-// 			return
-// 		}
-// 		// insert operation log
-// 		b, _ := json.Marshal(roleDto)
-// 		orLogDto := dto.OperationLogDto{
-// 			UserId:           int(c.Value("userId").(float64)),
-// 			RequestUrl:       c.Request.RequestURI,
-// 			OperationMethod:  c.Request.Method,
-// 			Params:           string(b),
-// 			Ip:               c.ClientIP(),
-// 			IpLocation:       "", //TODO...待接入获取ip位置服务
-// 			OperationResult:  "success",
-// 			OperationSuccess: 1,
-// 			OperationContent: "Edit Role",
-// 		}
-// 		_ = logService.InsertOperationLog(&orLogDto)
-// 		ok(c, "ok.UpdateDone")
-// 	}
-// }
+// @Tags Users
+// @Summary 编辑用户
+// @Security ApiKeyAuth
+// @Produce  json
+// @Param id path int true "用户id"
+// @Success 200 {string} json "{"code":200,"data":{"id":1}}"
+// @Router /v1/users/{id} [put]
+func (u *DisquisionController) Edit(c *gin.Context) {
+	var userDto dto.DisquisionEditDto
+	if u.BindAndValidate(c, &userDto) {
+		log.Info(fmt.Sprintf("%#v", userDto))
+		affected := disquisionService.Update(userDto)
+		// TODO update ldap user
+		if affected > 0 {
+			// insert operation log
+			b, _ := json.Marshal(userDto)
+			orLogDto := baseDto.OperationLogDto{
+				UserId:           int(c.Value("userId").(float64)),
+				RequestUrl:       c.Request.RequestURI,
+				OperationMethod:  c.Request.Method,
+				Params:           string(b),
+				Ip:               c.ClientIP(),
+				IpLocation:       "", //TODO...待接入获取ip位置服务
+				OperationResult:  "success",
+				OperationSuccess: 1,
+				OperationContent: "Edit User",
+			}
+			_ = logService.InsertOperationLog(&orLogDto)
+		}
+		baseController.Ok(c, "ok.UpdateDone")
+	}
+}
 
-// // @Summary 删除角色信息
-// // @Tags Role
-// // @Security ApiKeyAuth
-// // @Produce  json
-// // @Success 200 {string} json "{"code":200,"data":{"result":[...],"total":1}}"
-// // @Router /v1/roles/:id [delete]
-// // Delete - d of crud
-// func (r *RoleController) Delete(c *gin.Context) {
-// 	var roleDto dto.GeneralDelDto
-// 	if r.BindAndValidate(c, &roleDto) {
-// 		if roleService.Delete(roleDto) < 1 {
-// 			fail(c, ErrNoRecord)
-// 			return
-// 		}
-// 		// insert operation log
-// 		b, _ := json.Marshal(roleDto)
-// 		orLogDto := dto.OperationLogDto{
-// 			UserId:           int(c.Value("userId").(float64)),
-// 			RequestUrl:       c.Request.RequestURI,
-// 			OperationMethod:  c.Request.Method,
-// 			Params:           string(b),
-// 			Ip:               c.ClientIP(),
-// 			IpLocation:       "", //TODO...待接入获取ip位置服务
-// 			OperationResult:  "success",
-// 			OperationSuccess: 1,
-// 			OperationContent: "Delete Role",
-// 		}
-// 		_ = logService.InsertOperationLog(&orLogDto)
-// 		ok(c, "ok.DeleteDone")
-// 	}
-// }
+// @Tags Users
+// @Summary 删除用户
+// @Security ApiKeyAuth
+// @Param id path int true "用户id"
+// @Produce  json
+// @Success 200 {string} json "{"code":200,"data":{"id":1}}"
+// @Router /v1/users/{id} [delete]
+func (u *DisquisionController) Delete(c *gin.Context) {
+	var userDto baseDto.GeneralDelDto
+	if u.BindAndValidate(c, &userDto) {
+		affected := disquisionService.Delete(userDto)
+		if affected <= 0 {
+			baseController.Fail(c, baseController.ErrDelFail)
+			return
+		}
+		// insert operation log
+		b, _ := json.Marshal(userDto)
+		orLogDto := baseDto.OperationLogDto{
+			UserId:           int(c.Value("userId").(float64)),
+			RequestUrl:       c.Request.RequestURI,
+			OperationMethod:  c.Request.Method,
+			Params:           string(b),
+			Ip:               c.ClientIP(),
+			IpLocation:       "", //TODO...待接入获取ip位置服务
+			OperationResult:  "success",
+			OperationSuccess: 1,
+			OperationContent: "Delete User",
+		}
+		_ = logService.InsertOperationLog(&orLogDto)
+		baseController.Ok(c, "ok.DeletedDone")
+	}
+}

@@ -1,7 +1,8 @@
-package result
+package dao
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"zeus/pkg/api/business/research/dto"
 	"zeus/pkg/api/business/research/model"
 	baseDao "zeus/pkg/api/dao"
@@ -38,48 +39,20 @@ func (u Disquision) List(listDto baseDto.GeneralListDto) ([]model.Disquision, in
 	return disquision, total
 }
 
-// // GetRolesByIds
-// func (Role) GetRolesByIds(ids string) []model.Role {
-// 	var roles []model.Role
-// 	db := GetDb()
-// 	db.Where("id in (?)", strings.Split(ids, ",")).Find(&roles)
-// 	return roles
-// }
+// Create - new Disquision
+func (u Disquision) Create(disquision *model.Disquision) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Create(disquision)
+}
 
-// // GetRolesByNames
-// func (Role) GetRolesByNames(names []string) []model.Role {
-// 	var roles []model.Role
-// 	db := GetDb()
-// 	db.Where("role_name in (?)", names).Find(&roles)
-// 	return roles
-// }
+// Update - update Disquision
+func (u Disquision) Update(disquision *model.Disquision, ups map[string]interface{}) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Model(disquision).Update(ups)
+}
 
-// //Get - get single roel infoD
-// func (u Role) GetByName(name string) model.Role {
-// 	var role model.Role
-// 	db.Where("role_name = ?", name).Preload("Domain").First(&role)
-// 	return role
-// }
-
-// // Create - new role
-// func (r Role) Create(role *model.Role) *gorm.DB {
-// 	var row model.Role
-// 	db := GetDb()
-// 	db.Where("name = ? or role_name = ?", role.Name, role.RoleName).First(&row)
-// 	if row.Id > 0 {
-// 		return nil
-// 	}
-// 	return db.Create(role)
-// }
-
-// // Update - update role
-// func (r Role) Update(role *model.Role, ups map[string]interface{}) *gorm.DB {
-// 	db := GetDb()
-// 	return db.Model(role).Update(ups)
-// }
-
-// // Delete - delete role
-// func (r Role) Delete(role *model.Role) *gorm.DB {
-// 	db := GetDb()
-// 	return db.Delete(role)
-// }
+// Delete - delete Disquision
+func (u Disquision) Delete(disquision *model.Disquision) *gorm.DB {
+	db := baseDao.GetDb()
+	return db.Delete(disquision)
+}
