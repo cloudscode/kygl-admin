@@ -9,17 +9,9 @@ export function fetchDisquisionList(query) {
   })
 }
 
-export function fetchRoleList(query) {
+export function fetchDisquision(id) {
   return request({
-    url: 'v1/roles',
-    method: 'get',
-    params: query
-  })
-}
-
-export function fetchRole(id) {
-  return request({
-    url: 'role/show',
+    url: 'v1/disquisions',
     method: 'get',
     params: {
       id
@@ -27,25 +19,25 @@ export function fetchRole(id) {
   })
 }
 
-export function createRole(data) {
+export function createDisquision(data) {
   return request({
-    url: 'v1/roles',
+    url: 'v1/disquisions',
     method: 'post',
     data: qs.stringify(data)
   })
 }
 
-export function updateRole(data) {
+export function updateDisquision(data) {
   return request({
-    url: 'v1/roles/' + data.id,
+    url: 'v1/disquisions/' + data.id,
     method: 'put',
     data: qs.stringify(data)
   })
 }
 
-export function deleteRole(data) {
+export function deleteDisquision(data) {
   return request({
-    url: 'v1/roles/' + data.id,
+    url: 'v1/disquisions/' + data.id,
     method: 'delete',
     data: qs.stringify(data)
   })

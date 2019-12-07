@@ -23,7 +23,7 @@
       >{{ $t("table.search") }}</el-button
       >
       <el-button
-        v-permission="['/auth-system/menu:add']"
+        v-permission="['/disquisions:add']"
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
@@ -38,20 +38,24 @@
         :eval-func="func"
         :eval-args="args"
         :columns="columns"
-        :expand-all="expandAll"        
+        :expand-all="expandAll"
         @loadChilden="loadChilden"
-       >        
-        <el-table-column :label="$t('menu.actions')" width="200" align="center">
+      >
+        <el-table-column
+          :label="$t('disquisions.actions')"
+          width="200"
+          align="center"
+        >
           <template v-if="scope.row.id" slot-scope="scope">
             <el-button
-              v-permission="['/auth-system/menu:edit']"
+              v-permission="['/disquisions:edit']"
               type="text"
               @click="handleUpdate(scope.row)"
             >
               {{ $t("table.edit") }}
             </el-button>
             <el-button
-              v-permission="['/auth-system/menu:del']"
+              v-permission="['/disquisions:del']"
               type="text"
               @click="handleDelete(scope.row)"
             >
@@ -62,7 +66,7 @@
       </tree-table>
     </template>
     <el-dialog
-      :name="$t('menu.' + textMap[dialogStatus])"
+      :name="$t('dictionaries.' + textMap[dialogStatus])"
       :visible.sync="dialogFormVisible"
     >
       <el-form
@@ -73,11 +77,10 @@
         label-width="80px"
         style=" margin: 0 50px;"
       >
-         
-        <el-form-item :label="$t('menu.name')" prop="name">
+        <el-form-item :label="$t('dictionaries.name')" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item :label="$t('menu.parents')">
+        <el-form-item :label="$t('dictionaries.parents')">
           <el-cascader
             :style="{ width: '100%' }"
             :options="data_options"
@@ -86,46 +89,16 @@
             change-on-select
           />
         </el-form-item>
+        <el-form-item :label="$t('dictionaries.code')" prop="code">
+          <el-input v-model="temp.code" />
+        </el-form-item>
         <el-form-item
           v-if="temp.menu_type !== '2'"
-          :label="$t('menu.topnum')"
+          :label="$t('dictionaries.sort')"
           prop="sortvalue"
         >
           <el-input v-model="temp.sortvalue" />
         </el-form-item>
-        <!-- <el-form-item v-if="temp.menu_type === '1'" :label="$t('menu.router')">
-          <el-input v-model="temp.url" />
-        </el-form-item> -->
-        <!-- <el-form-item>
-          <el-alert
-            v-if="temp.menu_type == 2"
-            title="权限标识与别名说明"
-            type="warning"
-            description="标识，别名属同一个权限，主要用于前后分离,前后权限标识不一致,且前后两端皆需判定权限的项目。一般情况别名置空即可,如有多个别名可逗号分隔。"
-          ></el-alert>
-        </el-form-item>
-        <el-form-item v-if="temp.menu_type == 2" :label="$t('menu.auth')">
-          <el-input v-model="temp.perms" />
-        </el-form-item>
-        <el-form-item v-if="temp.menu_type == 2" :label="$t('menu.alias')">
-          <el-input v-model="temp.alias" />
-        </el-form-item>
-        <el-form-item v-if="temp.menu_type != 2" :label="$t('menu.icon')">
-          <el-select
-            v-model="temp.icon"
-            class="filter-item"
-            placeholder="Please select"
-          >
-            <el-option
-              v-for="item in icons"
-              :key="item"
-              :label="item"
-              :value="item"
-            >
-              <svg-icon :icon-class="item" />
-            </el-option>
-          </el-select>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{
@@ -178,7 +151,7 @@ export default {
         id: undefined,
         name: '',
         menu_type: '1',
-        url: '',
+        code: '',
         sortvalue: 1,
         perms: '',
         icon: '',
@@ -276,8 +249,8 @@ export default {
       })
     },
     loadChilden(params) {
-       this.listLoading = true
-      var row =params.record
+      this.listLoading = true
+      var row = params.record
       var parent_id = row.id
       fetchDictionaryItemsList({ q: 'd=' + parent_id }).then(res => {
         const res_menus = res.data.result
@@ -450,28 +423,28 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      console.log(this.temp);
+      console.log(this.temp)
       this.temp.created_time = new Date(this.temp.created_time)
       this.temp.last_update_time = new Date(this.temp.last_update_time)
       this.temp.parents = ['0']
       this.findParent(this.temp.id, this.temp.parents, this.list)
       // this.temp.parents.reverse()
-      this.dialogStatus = 'update'
+      this.dialogStatus = `update`
       this.dialogFormVisible = true
     },
     handleDelete(row) {
-      this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm(`此操作将永久删除数据, 是否继续?`, `提示`, {
+        confirmButtonText: `确定`,
+        cancelButtonText: `取消`,
+        type: `warning`
       })
         .then(() => {
           deleteDictionaryItems({ id: row.id })
             .then(() => {
               this.$notify({
-                title: '成功',
-                message: '删除成功',
-                type: 'success',
+                title: `成功`,
+                message: `删除成功`,
+                type: `success`,
                 duration: 2000
               })
               // const index = this.list.indexOf(row)
@@ -495,8 +468,8 @@ export default {
               this.getList()
               this.dialogFormVisible = false
               this.$notify({
-                name: '成功',
-                message: '创建成功',
+                name: `成功`,
+                message: `创建成功`,
                 type: 'success',
                 duration: 2000
               })
@@ -511,14 +484,14 @@ export default {
       this.temp = obj
       this.temp.name = obj.name
       this.temp.parent_id = obj.parent_id
-      delete this.temp.children     
+      delete this.temp.children
       return createDictionaryItems(this.temp)
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {
-        if (valid) {         
-          delete this.temp.children      
-          const tempData = Object.assign({}, this.temp)        
+        if (valid) {
+          delete this.temp.children
+          const tempData = Object.assign({}, this.temp)
           tempData.parent_id = tempData.parents[this.temp.parents.length - 1]
           delete tempData.parent
           updateDictionaryItems(tempData)
@@ -526,9 +499,9 @@ export default {
               this.getList()
               this.dialogFormVisible = false
               this.$notify({
-                name: '成功',
-                message: '更新成功',
-                type: 'success',
+                name: `成功`,
+                message: `更新成功`,
+                type: `success`,
                 duration: 2000
               })
             })

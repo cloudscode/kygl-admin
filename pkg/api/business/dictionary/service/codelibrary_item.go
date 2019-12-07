@@ -29,6 +29,7 @@ func (CodelibraryItemService) List(treeDto baseDto.GeneralTreeDto) ([]model.Code
 func (ms CodelibraryItemService) Create(codelibraryItemCreateDto dto.CodelibraryItemCreateDto) model.CodelibraryItem {
 	codelibraryItemCreateModel := model.CodelibraryItem{
 		Name:           codelibraryItemCreateDto.Name,
+		Code:           codelibraryItemCreateDto.Code,
 		ParentId:       codelibraryItemCreateDto.ParentId,
 		Sortvalue:      codelibraryItemCreateDto.Sortvalue,
 		CreateTime:     time.Now(),
@@ -56,6 +57,7 @@ func (ms CodelibraryItemService) Update(codelibraryItemCreateDto dto.Codelibrary
 	codelibraryItemCreateModel := codelibraryItemDao.Get(codelibraryItemCreateDto.Id, false)
 	c := codelibraryItemDao.Update(&codelibraryItemCreateModel, map[string]interface{}{
 		"name":      codelibraryItemCreateDto.Name,
+		"code":      codelibraryItemCreateDto.Code,
 		"parent_id": codelibraryItemCreateDto.ParentId,
 	})
 	// 1.Remove all alias

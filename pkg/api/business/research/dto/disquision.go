@@ -1,5 +1,7 @@
 package dto
 
+import "time"
+
 // DisquisionListSearchMapping - define search query keys in disquision list page
 var DisquisionListSearchMapping = map[string]string{
 	"n": "name",
@@ -9,22 +11,55 @@ var DisquisionListSearchMapping = map[string]string{
 
 // DisquisionCreateDto - dto for disquision creation
 type DisquisionCreateDto struct {
-	Name string `form:"name" json:"name" binding:"required"`
-	// DomainId    int    `form:"domain_id" json:"domain_id" binding:"required,gte=1"`
-	// RoleName    string `form:"role_name" json:"role_name" binding:"required"`
-	// Remark      string `form:"remark" json:"remark"`
-	// MenuIds     string `form:"menu_ids" json:"menu_ids"`
-	// MenuIdsEle  string `form:"menu_ids_ele" json:"menu_ids_ele"`
-	// DataPermIds string `form:"data_perm_ids" json:"data_perm_ids"`
+	Title           string    `form:"title" json:"title" binding:"required"`
+	Kind            string    `json:"kind"`
+	Publications    string    `json:"publications"`
+	Levels          string    `json:"levels"`
+	Volumeno        string    `json:"volumeno"`
+	Period          string    `json:"period"`
+	Publishingdate  time.Time `json:"publishingdate"`
+	Wordlength      float32   `json:"wordlength"`
+	Knowledgeclass  string    `json:"knowledgeclass"`
+	Firstknowledge  string    `json:"firstknowledge"`
+	Source          string    `json:"source"`
+	Publishingrange string    `json:"publishingrange"`
+	Issn            string    `json:"issn"`
+	Cn              string    `json:"cn"`
+	Orgid           int       `json:"orgid"`
+	Authorname      string    `json:"authorname"`
+	Flagapprove     int       `json:"flagapprove"`
+	Sysemplid       int       `json:"sysemplid"`
+	Sysdatetime     time.Time `json:"sysdatetime"`
+	Flagschool      int       `json:"flagschool"`
+	Approvecomments string    `json:"approvecomments"`
+	Systemtype      int       `json:"systemtype"`
+	Disname         string    `json:"disname"`
 }
 
 // DisquisionEditDto - dto for disquision modification
 type DisquisionEditDto struct {
-	Id   int    `uri:"id" json:"id" binding:"required,gte=1"`
-	Name string `form:"name" json:"name" binding:"required"`
-	// DomainId    int    `form:"domain_id" json:"domain_id" binding:"required,gte=1"`
-	// Remark      string `form:"remark" json:"remark"`
-	// MenuIds     string `form:"menu_ids" json:"menu_ids"`
-	// MenuIdsEle  string `form:"menu_ids_ele" json:"menu_ids_ele"`
-	// DataPermIds string `form:"data_perm_ids" json:"data_perm_ids"`
+	Id              int       `uri:"id" json:"id" binding:"required,gte=1"`
+	Title           string    `form:"title" json:"title" binding:"required"`
+	Kind            string    `json:"kind"`
+	Publications    string    `json:"publications"`
+	Levels          string    `json:"levels"`
+	Volumeno        string    `json:"volumeno"`
+	Period          string    `json:"period"`
+	Publishingdate  time.Time `json:"publishingdate"`
+	Wordlength      float32   `json:"wordlength"`
+	Knowledgeclass  string    `json:"knowledgeclass"`
+	Firstknowledge  string    `json:"firstknowledge"`
+	Source          string    `json:"source"`
+	Publishingrange string    `json:"publishingrange"`
+	Issn            string    `json:"issn"`
+	Cn              string    `json:"cn"`
+	Orgid           int       `json:"orgid"`
+	Authorname      string    `json:"authorname"`
+	Flagapprove     int       `json:"flagapprove"`
+	Sysemplid       int       `json:"sysemplid"`
+	Sysdatetime     time.Time `json:"sysdatetime"`
+	Flagschool      int       `json:"flagschool"`
+	Approvecomments string    `json:"approvecomments"`
+	Systemtype      int       `json:"systemtype"`
+	Disname         string    `json:"disname"`
 }

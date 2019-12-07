@@ -138,3 +138,18 @@ func (u *DisquisionController) Delete(c *gin.Context) {
 		baseController.Ok(c, "ok.DeletedDone")
 	}
 }
+
+func (u *DisquisionController) Get(c *gin.Context) {
+	var gDto baseDto.GeneralGetDto
+	if u.BindAndValidate(c, &gDto) {
+		data := disquisionService.InfoOfId(gDto)
+		//user not found
+		if data.Id < 1 {
+			baseController.Fail(c, baseController.ErrNoUser)
+			return
+		}
+		baseController.Resp(c, map[string]interface{}{
+			"result": data,
+		})
+	}
+}

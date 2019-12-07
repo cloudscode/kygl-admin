@@ -35,7 +35,7 @@ func (u Disquision) List(listDto baseDto.GeneralListDto) ([]model.Disquision, in
 	}
 	db.Preload(tableDisquisition).Offset(listDto.Skip).Limit(listDto.Limit).Find(&disquision)
 	db.Model(&model.Disquision{}).Count(&total)
-	fmt.Printf(">>>>>>>>>>>>" + disquision[0].Title + "<<<<<<<<<<<<<<<<")
+
 	return disquision, total
 }
 

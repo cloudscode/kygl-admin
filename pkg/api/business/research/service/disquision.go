@@ -2,13 +2,12 @@ package service
 
 import (
 	"errors"
-	"strconv"
 	"zeus/pkg/api/business/research/dao"
 	"zeus/pkg/api/business/research/dto"
 	"zeus/pkg/api/business/research/model"
-	"zeus/pkg/api/domain/user"
 	baseDto "zeus/pkg/api/dto"
 	"zeus/pkg/api/log"
+	"zeus/pkg/api/utils/copier"
 )
 
 var disquisionDao = dao.Disquision{}
@@ -26,6 +25,7 @@ func (DisquisionService) List(dto baseDto.GeneralListDto) ([]model.Disquision, i
 func (us DisquisionService) Create(userDto dto.DisquisionCreateDto) (*model.Disquision, error) {
 
 	userModel := model.Disquision{}
+	copier.Copy(&userModel, &userDto)
 	c := disquisionDao.Create(&userModel)
 	if c.Error != nil {
 		log.Error(c.Error.Error())
@@ -50,8 +50,10 @@ func (us DisquisionService) Delete(dto baseDto.GeneralDelDto) int64 {
 		Id: dto.Id,
 	}
 	c := disquisionDao.Delete(&userModel)
-	if c.RowsAffected > 0 {
-		user.DeleteUser(strconv.Itoa(dto.Id))
-	}
+
 	return c.RowsAffected
+}
+
+func (us DisquisionService) InfoOfId(dto baseDto.GeneralGetDto) model.Disquision {
+	return disquisionDao.Get(dto.Id, true)
 }

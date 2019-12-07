@@ -7,6 +7,7 @@ import (
 type CodelibraryItem struct {
 	Id             int       `json:"id"`
 	Name           string    `json:"name"`
+	Code      string `json:"code"`
 	ParentId       int       `json:"parent_id"`
 	Sortvalue      int       `json:"sortvalue"`
 	CreateTime     time.Time `gorm:"type:time;column:create_time;not null;default:CURRENT_TIMESTAMP" json:"created_time,omitempty" example:"2019-07-10 0:39"`

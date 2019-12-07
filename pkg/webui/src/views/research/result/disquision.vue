@@ -7,12 +7,28 @@
       <!--style="width: 200px;"-->
       <!--class="filter-item"-->
       <!--@keyup.enter.native="handleFilter"/>-->
-      <el-select v-model="search_domain_id" class="filter-item" placeholder="Please select" @change="toSearch">
-        <el-option key="" label="全部" value=""/>
-        <el-option v-for="item in domainlist" :key="item.id" :label="item.name" :value="item.id"/>
+      <el-select
+        v-model="search_domain_id"
+        class="filter-item"
+        placeholder="Please select"
+        @change="toSearch"
+      >
+        <el-option key="" label="全部" value="" />
+        <el-option
+          v-for="item in domainlist"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="toSearch">
-        {{ $t('table.search') }}
+      <el-button
+        v-waves
+        class="filter-item"
+        type="primary"
+        icon="el-icon-search"
+        @click="toSearch"
+      >
+        {{ $t("table.search") }}
       </el-button>
       <el-button
         v-permission="['/permission/role:add']"
@@ -20,7 +36,8 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
-        @click="handleCreate">{{ $t('table.add') }}
+        @click="handleCreate"
+      >{{ $t("table.add") }}
       </el-button>
     </div>
 
@@ -32,8 +49,14 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange">
-      <el-table-column :label="$t('disquision.id')" prop="id" align="center" width="65">
+      @sort-change="sortChange"
+    >
+      <el-table-column
+        :label="$t('disquision.id')"
+        prop="id"
+        align="center"
+        width="65"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -55,7 +78,7 @@
       </el-table-column>
       <el-table-column :label="$t('disquision.publishing_time')">
         <template slot-scope="scope">
-          {{ scope.row.publishingdate | parseTime('{y}-{m}-{d} {h}:{i}') }}
+          {{ scope.row.publishingdate | parseTime("{y}-{m}-{d} {h}:{i}") }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('disquision.public_name')">
@@ -78,56 +101,99 @@
           {{ scope.row.flagapprove }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('role.actions')" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column
+        :label="$t('role.actions')"
+        align="center"
+        width="200"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             v-permission="['/permission/role:edit']"
             type="primary"
             size="mini"
-            @click="handleUpdate(scope.row)">{{ $t('table.edit') }}
+            @click="handleUpdate(scope.row)"
+          >{{ $t("table.edit") }}
           </el-button>
-          <el-button v-permission="['/permission/role:del']" type="danger" size="mini" @click="handleDelete(scope.row)">
-            {{ $t('table.delete') }}
+          <el-button
+            v-permission="['/permission/role:del']"
+            type="danger"
+            size="mini"
+            @click="handleDelete(scope.row)"
+          >
+            {{ $t("table.delete") }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
-      @pagination="getList"/>
+      @pagination="getList"
+    />
 
-    <el-dialog :title="$t('user.'+ textMap[dialogStatus])" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :title="$t('user.' + textMap[dialogStatus])"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form
         ref="dataForm"
         :rules="rules"
         :model="temp"
         label-position="left"
         label-width="80px"
-        style=" margin: 0 50px;">
-        <el-form-item :label="$t('role.name')" prop="name">
-          <el-input v-model="temp.name"/>
+        style=" margin: 0 50px;"
+      >
+        <el-form-item :label="$t('disquision.thesis_type')" prop="thesis_type">
+          <el-radio-group v-model="temp.thesis_type">
+            <el-radio-button label="1">男</el-radio-button>
+            <el-radio-button label="2">女</el-radio-button>
+            <el-radio-button label="3">保密</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-row type="flex" class="row-bg">
+          <el-col :span="12">
+            <el-form-item label="$t('disquision.thesis_type')" prop="ep_name">
+              <el-input style="width:16em"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-form-item label="签约企业简称" prop="ep_abbreviation">
+            <el-input style="width:16em"></el-input>
+          </el-form-item>
+        </el-row>
+        <el-form-item :label="$t('disquision.title')" prop="name">
+          <el-input v-model="temp.title" />
         </el-form-item>
         <el-form-item :label="$t('role.remark')">
-          <el-input v-model="temp.remark"/>
+          <el-input v-model="temp.remark" />
         </el-form-item>
         <el-form-item :label="$t('role.domain')">
           <el-select
             v-model="domain_id"
-            :disabled="dialogStatus!=='create'"
+            :disabled="dialogStatus !== 'create'"
             class="filter-item"
             placeholder="Please select"
-            @change="getPermList">
-            <el-option v-for="item in domainlist" :key="item.id" :label="item.name" :value="item.id"/>
+            @change="getPermList"
+          >
+            <el-option
+              v-for="item in domainlist"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('role.menuscope')">
           <el-radio-group v-model="scopeType" class="radio">
-            <el-radio-button label="1">{{ $t('role.menuscope') }}</el-radio-button>
-            <el-radio-button label="2">{{ $t('role.datascope') }}</el-radio-button>
+            <el-radio-button label="1">{{
+              $t("role.menuscope")
+            }}</el-radio-button>
+            <el-radio-button label="2">{{
+              $t("role.datascope")
+            }}</el-radio-button>
           </el-radio-group>
           <el-tree
             v-show="parseInt(scopeType) === 1"
@@ -135,19 +201,26 @@
             :data="tree_data"
             :props="tree_props"
             show-checkbox
-            node-key="id"/>
+            node-key="id"
+          />
           <el-tree
             v-show="parseInt(scopeType) === 2"
             ref="treeData"
             :data="tree_data_perm"
             :props="tree_props"
             show-checkbox
-            node-key="id"/>
+            node-key="id"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false,tree_data = []">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}
+        <el-button @click="(dialogFormVisible = false), (tree_data = [])">{{
+          $t("table.cancel")
+        }}</el-button>
+        <el-button
+          type="primary"
+          @click="dialogStatus === 'create' ? createData() : updateData()"
+        >{{ $t("table.confirm") }}
         </el-button>
       </div>
     </el-dialog>
@@ -155,15 +228,20 @@
 </template>
 
 <script>
-import { fetchDisquisionList, fetchRoleList, createRole, updateRole, deleteRole } from '@/api/research/result/disquision'
+import {
+  fetchDisquisionList,
+  createDisquision,
+  updateDisquision,
+  deleteDisquision
+} from '@/api/research/result/disquision'
 import { fetchDomainList } from '@/api/domain'
 import { fetchMenuList } from '@/api/menu'
-import { parseTime } from '@/utils'
+
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { dataPermList } from '@/api/dataPerm'
 
 export default {
-  name: 'Role',
+  name: `Role`,
   components: { Pagination },
   data() {
     return {
@@ -175,30 +253,33 @@ export default {
         page: 1,
         skip: 0,
         limit: 20,
-        q: ''
+        q: ``
       },
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      department: ['admin', 'editor'],
+      sortOptions: [
+        { label: `ID Ascending`, key: `+id` },
+        { label: `ID Descending`, key: `-id` }
+      ],
+      department: [`admin`, `editor`],
       showReviewer: false,
       temp: {
         id: undefined,
-        name: '',
-        remark: '',
-        role_name: '',
+        title: ``,
+        remark: ``,
+        role_name: ``,
         menu_ids: [],
-        domain_id: ''
+        domain_id: ``
       },
       dialogFormVisible: false,
-      dialogStatus: 'create',
+      dialogStatus: `create`,
       textMap: {
         update: 'Edit',
         create: 'Create'
       },
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        name: [{ required: true, message: '角色名必须填写', trigger: 'blur' }],
-        remark: [{ required: true, message: '备注必须填写', trigger: 'blur' }]
+        // type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        title: [{ required: true, message: '角色名必须填写', trigger: 'blur' }]
+        // remark: [{ required: true, message: '备注必须填写', trigger: 'blur' }]
       },
       downloadLoading: false,
       tree_data: [],
@@ -243,13 +324,16 @@ export default {
     },
     // 获取权限列表 （角色权限or数据权限）
     getPermList() {
-      Promise.all([fetchMenuList({
-        q: 'd=' + this.domain_id
-      }), dataPermList({
-        start: 0,
-        limit: 20,
-        q: 'd=' + this.domain_id
-      })]).then(response => {
+      Promise.all([
+        fetchMenuList({
+          q: 'd=' + this.domain_id
+        }),
+        dataPermList({
+          start: 0,
+          limit: 20,
+          q: 'd=' + this.domain_id
+        })
+      ]).then(response => {
         console.log(response)
         const res_menus = response[0].data.result
         const result = response[1].data.result
@@ -278,7 +362,9 @@ export default {
       })
     },
     o(data, id) {
-      const menu = data.filter(o => parseInt(o.parent_id) === parseInt(id) && o.domain_id > 0)
+      const menu = data.filter(
+        o => parseInt(o.parent_id) === parseInt(id) && o.domain_id > 0
+      )
       menu.forEach(o => {
         o.children = this.o(data, o.id)
       })
@@ -303,38 +389,40 @@ export default {
     },
     sortByID(order) {
       if (order === 'ascending') {
-        this.listQuery.sort = '+id'
+        this.listQuery.sort = `+id`
       } else {
-        this.listQuery.sort = '-id'
+        this.listQuery.sort = `-id`
       }
       this.handleFilter()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: '',
+        title: '',
         role_name: '',
         remark: '',
         menu_ids: [],
         domain_id: ''
       }
-      this.domain_id = ''
+      this.domain_id = ``
     },
     handleCreate() {
       this.resetTemp()
-      this.domainlist.length > 0 ? this.domain_id = this.domainlist[0].id : ''
+      this.domainlist.length > 0
+        ? (this.domain_id = this.domainlist[0].id)
+        : ``
       this.getPermList()
-      this.dialogStatus = 'create'
+      this.dialogStatus = `create`
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
+          this.temp.author = `vue-element-admin`
           this.temp.role_name = this.temp.name
           this.temp.menu_ids_ele = this.$refs.tree.getCheckedKeys().join(',')
           const menu_ids = []
@@ -346,29 +434,33 @@ export default {
             data_perm_ids.push(o)
           })
           this.temp.menu_ids = Array.from(new Set(menu_ids)).join(',')
-          this.temp.data_perm_ids = Array.from(new Set(data_perm_ids)).join(',')
+          this.temp.data_perm_ids = Array.from(new Set(data_perm_ids)).join(
+            ','
+          )
           this.temp.domain_id = this.domain_id
-          createRole(this.temp).then(() => {
-            // this.list.unshift(this.temp)
-            this.getList()
-            this.tree_data = []
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
+          createDisquision(this.temp)
+            .then(() => {
+              // this.list.unshift(this.temp)
+              this.getList()
+              this.tree_data = []
+              this.dialogFormVisible = false
+              this.$notify({
+                title: `成功`,
+                message: `创建成功`,
+                type: `success`,
+                duration: 2000
+              })
             })
-          }).catch((res) => {
-            this.$message.error(res.msg)
-          })
+            .catch(res => {
+              this.$message.error(res.msg)
+            })
         }
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
+      this.dialogStatus = `update`
       this.domain_id = this.temp.domain.id
       this.getPermList()
       this.dialogFormVisible = true
@@ -384,7 +476,7 @@ export default {
       }
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.temp.role_name = this.temp.name
           this.temp.menu_ids_ele = this.$refs.tree.getCheckedKeys().join(',')
@@ -402,74 +494,85 @@ export default {
             data_perm_ids.push(o)
           })
           this.temp.menu_ids = Array.from(new Set(menu_ids)).join(',')
-          this.temp.data_perm_ids = Array.from(new Set(data_perm_ids)).join(',')
+          this.temp.data_perm_ids = Array.from(new Set(data_perm_ids)).join(
+            ','
+          )
           this.temp.domain_id = this.domain_id
           delete this.temp.domain
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp)
-          updateRole(tempData).then(() => {
-            this.getList()
-            this.tree_data = []
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '更新成功',
-              type: 'success',
-              duration: 2000
+          updateDisquision(tempData)
+            .then(() => {
+              this.getList()
+              this.tree_data = []
+              this.dialogFormVisible = false
+              this.$notify({
+                title: `成功`,
+                message: `更新成功`,
+                type: `success`,
+                duration: 2000
+              })
             })
-          }).catch((res) => {
-            this.$message.error(res.msg)
-          })
+            .catch(res => {
+              this.$message.error(res.msg)
+            })
         }
       })
     },
     handleDelete(row) {
-      this.$confirm('<span>删除后，拥有该角色的用户相关权限将受到影响，</span>你还要继续吗?', '删除角色', {
-        confirmButtonText: '继续',
-        cancelButtonText: '取消',
-        type: 'warning',
-        dangerouslyUseHTMLString: true
-      }).then(() => {
-        deleteRole({ id: row.id }).then(() => {
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
-          // const index = this.list.indexOf(row)
-          // this.list.splice(index, 1)
-          this.getList()
-        }).catch((res) => {
-          this.$message.error(res.msg)
+      this.$confirm(
+        `<span>删除后，拥有该角色的用户相关权限将受到影响，</span>你还要继续吗?`,
+        `删除角色`,
+        {
+          confirmButtonText: `继续`,
+          cancelButtonText: `取消`,
+          type: `warning`,
+          dangerouslyUseHTMLString: true
+        }
+      )
+        .then(() => {
+          deleteDisquision({ id: row.id })
+            .then(() => {
+              this.$notify({
+                title: `成功`,
+                message: `删除成功`,
+                type: `success`,
+                duration: 2000
+              })
+              // const index = this.list.indexOf(row)
+              // this.list.splice(index, 1)
+              this.getList()
+            })
+            .catch(res => {
+              this.$message.error(res.msg)
+            })
         })
-      }).catch(() => {
-      })
+        .catch(() => {})
     }
   }
 }
 </script>
 
 <style>
-  .radio {
-    margin-bottom: 10px;
-  }
-  .pagination-container {
-    margin-top: 0;
-  }
+.radio {
+  margin-bottom: 10px;
+}
+.pagination-container {
+  margin-top: 0;
+}
 
-  .el-tree {
-    box-shadow: 0px 0px 2px #e2e2e2;
-  }
+.el-tree {
+  box-shadow: 0px 0px 2px #e2e2e2;
+}
 
-  .el-tree-node {
-    display: flex;
-  }
+.el-tree-node {
+  display: flex;
+}
 
-  .el-tree > .el-tree-node:not(:nth-last-child(2)) {
-    border-bottom: 1px solid #e2e2e2;
-  }
-  .el-message-box__message span{
-    color: red;
-  }
+.el-tree > .el-tree-node:not(:nth-last-child(2)) {
+  border-bottom: 1px solid #e2e2e2;
+}
+.el-message-box__message span {
+  color: red;
+}
 </style>

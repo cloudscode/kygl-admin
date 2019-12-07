@@ -164,10 +164,10 @@ func SetUp(e *gin.Engine, cors bool) {
 	//Disquision
 	disquisionController := &researchControllers.DisquisionController{}
 	v1.GET("/disquisions", disquisionController.List)
-	// v1.GET("/roles/:id", roleController.Get)
-	// v1.POST("/roles", roleController.Create)
-	// v1.PUT("/roles/:id", roleController.Edit)
-	// v1.DELETE("/roles/:id", roleController.Delete)
+	v1.GET("/disquisions/:id", disquisionController.Get)
+	v1.POST("/disquisions", disquisionController.Create)
+	v1.PUT("/disquisions/:id", disquisionController.Edit)
+	v1.DELETE("/disquisions/:id", disquisionController.Delete)
 
 	//CodelibraryItem
 	codelibraryItemController := &codelibraryItemControllers.CodelibraryItemController{}

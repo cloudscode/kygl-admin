@@ -14,6 +14,7 @@ var CodelibraryItemListSearchMapping = map[string]string{
 // MenuCreateDto - dto for menu's creation
 type CodelibraryItemCreateDto struct {
 	Name      string `form:"name" json:"name" binding:"required"`
+	Code      string `form:"code" json:"code"`
 	ParentId  int    `form:"parent_id,default=0" json:"parent_id" binding:"gte=0"`
 	Sortvalue int    `form:"sortvalue,default=1" json:"sortvalue"`
 }
@@ -22,6 +23,7 @@ type CodelibraryItemCreateDto struct {
 type CodelibraryItemEditDto struct {
 	Id        int    `uri:"id" json:"id" binding:"required,gte=1"`
 	Name      string `form:"name" json:"name" binding:"required"`
+	Code      string `form:"code" json:"code"`
 	ParentId  int    `form:"parent_id,default=0" json:"parent_id" binding:"gte=0"`
 	Sortvalue int    `form:"sortvalue,default=1" json:"sortvalue"`
 }
