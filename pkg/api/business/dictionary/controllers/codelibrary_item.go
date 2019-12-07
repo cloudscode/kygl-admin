@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"zeus/pkg/api/business/dictionary/dto"
 	"zeus/pkg/api/business/dictionary/service"
 	baseController "zeus/pkg/api/controllers"
 	baseDto "zeus/pkg/api/dto"
 	baseService "zeus/pkg/api/service"
-	"github.com/gin-gonic/gin"
 )
 
 var codelibraryItemService = service.CodelibraryItemService{}
@@ -31,6 +31,24 @@ func (m *CodelibraryItemController) List(c *gin.Context) {
 		baseController.Resp(c, map[string]interface{}{
 			"result": data,
 			"total":  total,
+		})
+	}
+}
+
+// @Summary 菜单信息
+// @Tags menu
+// @Security ApiKeyAuth
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} model.User "{"code":200,"data":{"id":1,"name":"wutong"}}"
+// @Failure 400 {string} json "{"code":10004,"msg": "用户信息不存在"}"
+// @Router /v1/menus/:id [get]
+func (u *CodelibraryItemController) queryByCode(c *gin.Context) {
+	var listDto dto.CodelibraryItemDto
+	if u.BindAndValidate(c, &listDto) {
+		data := codelibraryItemService.queryByCode(listDto)
+		baseController.Resp(c, map[string]interface{}{
+			"result": data,
 		})
 	}
 }

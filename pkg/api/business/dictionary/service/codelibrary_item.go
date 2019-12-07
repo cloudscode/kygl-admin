@@ -25,6 +25,11 @@ func (CodelibraryItemService) List(treeDto baseDto.GeneralTreeDto) ([]model.Code
 	return codelibraryItemDao.List(treeDto)
 }
 
+// List - users list with pagination
+func (CodelibraryItemService) queryByCode(listDto dto.CodelibraryItemDto) []model.CodelibraryItem {
+	return codelibraryItemDao.queryByCode(listDto)
+}
+
 // Create - create a menu item
 func (ms CodelibraryItemService) Create(codelibraryItemCreateDto dto.CodelibraryItemCreateDto) model.CodelibraryItem {
 	codelibraryItemCreateModel := model.CodelibraryItem{
