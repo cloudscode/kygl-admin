@@ -234,6 +234,9 @@ import {
   updateDisquision,
   deleteDisquision
 } from '@/api/research/result/disquision'
+import {
+  queryDictionaryItemsByCode
+} from '@/api/dictionary/items'
 import { fetchDomainList } from '@/api/domain'
 import { fetchMenuList } from '@/api/menu'
 
@@ -298,8 +301,15 @@ export default {
   created() {
     this.getDeptList()
     this.getList()
+    this.dictionaryItemsByCode(`DisquisionKind`)
   },
   methods: {
+    dictionaryItemsByCode(code) {
+      queryDictionaryItemsByCode(code).then(response => {
+        const list = response.data.result
+        console.log(list)
+      })
+    },
     getList() {
       this.listLoading = true
       this.listQuery.skip = (this.listQuery.page - 1) * this.listQuery.limit

@@ -176,5 +176,5 @@ func SetUp(e *gin.Engine, cors bool) {
 	v1.POST("/dictionary/items", codelibraryItemController.Create)
 	v1.PUT("/dictionary/items/:id", codelibraryItemController.Edit)
 	v1.DELETE("/dictionary/items/:id", codelibraryItemController.Delete)
-
+	v1.GET("/dictionary/queryByCode/:code", codelibraryItemController.QueryByCode)
 }

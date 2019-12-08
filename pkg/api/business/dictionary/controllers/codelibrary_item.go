@@ -43,10 +43,10 @@ func (m *CodelibraryItemController) List(c *gin.Context) {
 // @Success 200 {array} model.User "{"code":200,"data":{"id":1,"name":"wutong"}}"
 // @Failure 400 {string} json "{"code":10004,"msg": "用户信息不存在"}"
 // @Router /v1/menus/:id [get]
-func (u *CodelibraryItemController) queryByCode(c *gin.Context) {
+func (u *CodelibraryItemController) QueryByCode(c *gin.Context) {
 	var listDto dto.CodelibraryItemDto
 	if u.BindAndValidate(c, &listDto) {
-		data := codelibraryItemService.queryByCode(listDto)
+		data := codelibraryItemService.QueryByCode(listDto)
 		baseController.Resp(c, map[string]interface{}{
 			"result": data,
 		})

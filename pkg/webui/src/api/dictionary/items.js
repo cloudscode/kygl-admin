@@ -42,3 +42,10 @@ export function deleteDictionaryItems(data) {
     data: qs.stringify(data)
   })
 }
+
+export function queryDictionaryItemsByCode(code) {
+  return request({
+    url: 'v1/dictionary/queryByCode/' + code,
+    method: 'get'
+  })
+}

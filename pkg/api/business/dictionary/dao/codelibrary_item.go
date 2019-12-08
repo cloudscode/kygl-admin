@@ -70,15 +70,21 @@ func (m CodelibraryItem) List(treeDto baseDto.GeneralTreeDto) ([]model.Codelibra
 }
 
 // queryByCode
-func (m CodelibraryItem) queryByCode(listDto dto.CodelibraryItemDto) []model.CodelibraryItem {
+func (m CodelibraryItem) QueryByCode(listDto dto.CodelibraryItemDto) []model.CodelibraryItem {
 	var menus []model.CodelibraryItem
 
 	db := baseDao.GetDb()
 	for sk, sv := range baseDto.TransformSearch(listDto.Q, dto.CodelibraryItemQueryByCodeMapping) {
-		db = db.Where(fmt.Sprintf("%s = ?", sk), sv)
+		db.Where(fmt.Sprintf("p.%s = ?", sk), sv)
 	}
-	db.Preload("tab_codelibrary_item").Order(" sortvalue asc").Find(&menus)
+	//db.Preload("tab_codelibrary_item").Order(" sortvalue asc").Find(&menus)
 	//db.Model(&model.CodelibraryItem{}).Count(&total)
+	db.Table("tab_codelibrary_item").
+		Select("tab_codelibrary_item.*,user.username").
+		Order("sortvalue asc").
+		Joins("LEFT JOIN tab_codelibrary_item p ON p.id = tab_codelibrary_item.parent_id")
+
+	db.Find(&menus)
 	return menus
 }
 
