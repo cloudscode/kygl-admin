@@ -74,17 +74,13 @@ func (m CodelibraryItem) QueryByCode(listDto dto.CodelibraryItemDto) []model.Cod
 	var menus []model.CodelibraryItem
 
 	db := baseDao.GetDb()
-	for sk, sv := range baseDto.TransformSearch(listDto.Q, dto.CodelibraryItemQueryByCodeMapping) {
-		db.Where(fmt.Sprintf("p.%s = ?", sk), sv)
-	}
-	//db.Preload("tab_codelibrary_item").Order(" sortvalue asc").Find(&menus)
-	//db.Model(&model.CodelibraryItem{}).Count(&total)
-	db.Table("tab_codelibrary_item").
-		Select("tab_codelibrary_item.*,user.username").
-		Order("sortvalue asc").
-		Joins("LEFT JOIN tab_codelibrary_item p ON p.id = tab_codelibrary_item.parent_id")
-
-	db.Find(&menus)
+	// sub := db.Table("tab_codelibrary_item").Select("ID")
+	// for sk, sv := range baseDto.TransformSearch(listDto.Q, dto.CodelibraryItemQueryByCodeMapping) {
+	// 	db.Where(fmt.Sprintf("%s = ?", sk), sv)
+	// }
+	fmt.Println("******************************" + listDto.Q)
+	sub := db.Table("tab_codelibrary_item").Select("ID").Where("code = ?", listDto.Q).SubQuery()
+	db.Table("tab_codelibrary_item").Where("parent_id IN ?", sub).Find(&menus)
 	return menus
 }
 

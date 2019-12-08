@@ -44,8 +44,12 @@ export function deleteDictionaryItems(data) {
 }
 
 export function queryDictionaryItemsByCode(code) {
+  var data = {}
+  data.q = code
+  debugger
   return request({
     url: 'v1/dictionary/queryByCode/' + code,
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
