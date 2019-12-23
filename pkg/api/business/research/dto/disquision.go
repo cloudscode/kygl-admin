@@ -12,54 +12,58 @@ var DisquisionListSearchMapping = map[string]string{
 // DisquisionCreateDto - dto for disquision creation
 type DisquisionCreateDto struct {
 	Title           string    `form:"title" json:"title" binding:"required"`
-	Kind            string    `json:"kind"`
-	Publications    string    `json:"publications"`
-	Levels          string    `json:"levels"`
-	Volumeno        string    `json:"volumeno"`
-	Period          string    `json:"period"`
-	Publishingdate  time.Time `json:"publishingdate"`
-	Wordlength      float32   `json:"wordlength"`
-	Knowledgeclass  string    `json:"knowledgeclass"`
-	Firstknowledge  string    `json:"firstknowledge"`
-	Source          string    `json:"source"`
-	Publishingrange string    `json:"publishingrange"`
-	Issn            string    `json:"issn"`
-	Cn              string    `json:"cn"`
-	Orgid           int       `json:"orgid"`
-	Authorname      string    `json:"authorname"`
-	Flagapprove     int       `json:"flagapprove"`
-	Sysemplid       int       `json:"sysemplid"`
-	Sysdatetime     time.Time `json:"sysdatetime"`
-	Flagschool      int       `json:"flagschool"`
-	Approvecomments string    `json:"approvecomments"`
-	Systemtype      int       `json:"systemtype"`
-	Disname         string    `json:"disname"`
+	Kind            string    `form:"kind" json:"kind"`
+	Publications    string    `form:"publications" json:"publications"`
+	Levels          string    `form:"levels" json:"levels"`
+	Volumeno        string    `form:"volumeno" json:"volumeno"`
+	Period          string    `form:"period" json:"period"`
+	Publishingdate  time.Time `form:"publishingdate" json:"publishingdate"`
+	Wordlength      float32   `form:"wordlength" json:"wordlength"`
+	Knowledgeclass  string    `form:"knowledgeclass" json:"knowledgeclass"`
+	Firstknowledge  string    `form:"firstknowledge" json:"firstknowledge"`
+	Source          string    `form:"source" json:"source"`
+	Publishingrange string    `form:"publishingrange" json:"publishingrange"`
+	Issn            string    `form:"issn" json:"issn"`
+	Cn              string    `form:"cn" json:"cn"`
+	Authorname      string    `form:"authorname" json:"authorname"`
+	Flagapprove     int       `form:"flagapprove" json:"flagapprove"`
+	Flagschool      int       `form:"flagschool" json:"flagschool"`
+	Approvecomments string    `form:"approvecomments" json:"approvecomments"`
+	Systemtype      int       `form:"systemtype" json:"systemtype"`
+	Disname         string    `form:"disname" json:"disname"`
+	Orgid           int       `form:"orgid" json:"orgid"`
+	Deptid          int       `form:"deptid" json:"deptid"`
+	Createid        int       `form:"createid" json:"createid"`
+	Createtime      time.Time `form:"createtime" json:"createtime"`
+	Updateid        int       `form:"updateid" json:"updateid"`
+	Updatetime      time.Time `form:"updatetime" json:"updatetime"`
 }
 
 // DisquisionEditDto - dto for disquision modification
 type DisquisionEditDto struct {
-	Id              int       `uri:"id" json:"id" binding:"required,gte=1"`
-	Title           string    `form:"title" json:"title" binding:"required"`
-	Kind            string    `json:"kind"`
-	Publications    string    `json:"publications"`
-	Levels          string    `json:"levels"`
-	Volumeno        string    `json:"volumeno"`
-	Period          string    `json:"period"`
-	Publishingdate  time.Time `json:"publishingdate"`
-	Wordlength      float32   `json:"wordlength"`
-	Knowledgeclass  string    `json:"knowledgeclass"`
-	Firstknowledge  string    `json:"firstknowledge"`
-	Source          string    `json:"source"`
-	Publishingrange string    `json:"publishingrange"`
-	Issn            string    `json:"issn"`
-	Cn              string    `json:"cn"`
-	Orgid           int       `json:"orgid"`
-	Authorname      string    `json:"authorname"`
-	Flagapprove     int       `json:"flagapprove"`
-	Sysemplid       int       `json:"sysemplid"`
-	Sysdatetime     time.Time `json:"sysdatetime"`
-	Flagschool      int       `json:"flagschool"`
-	Approvecomments string    `json:"approvecomments"`
-	Systemtype      int       `json:"systemtype"`
-	Disname         string    `json:"disname"`
+	Id              int       `form:"id" json:"id"`
+	Title           string    `form:"title" json:"title"`
+	Kind            string    `form:"kind" json:"kind"`
+	Publications    string    `form:"publications" json:"publications"`
+	Levels          string    `form:"levels" json:"levels"`
+	Volumeno        string    `form:"volumeno" json:"volumeno"`
+	Period          string    `form:"period" json:"period"`
+	Publishingdate  time.Time `form:"publishingdate" json:"publishingdate"`
+	Wordlength      float32   `form:"wordlength" json:"wordlength"`
+	Knowledgeclass  string    `form:"knowledgeclass" json:"knowledgeclass"`
+	Firstknowledge  string    `form:"firstknowledge" json:"firstknowledge"`
+	Source          string    `form:"source" json:"source"`
+	Publishingrange string    `form:"publishingrange" json:"publishingrange"`
+	Issn            string    `form:"issn" json:"issn"`
+	Cn              string    `form:"cn" json:"cn"`
+	Authorname      string    `form:"authorname" json:"authorname"`
+	Flagapprove     int       `form:"flagapprove" json:"flagapprove"`
+	Flagschool      int       `form:"flagschool" json:"flagschool"`
+	Approvecomments string    `form:"approvecomments" json:"approvecomments"`
+	Systemtype      int       `form:"systemtype" json:"systemtype"`
+	Disname         string    `form:"disname" json:"disname"`
+	Orgid           int       `form:"orgid" json:"orgid"`
+	Deptid          int       `form:"deptid" json:"deptid"`
+	Updateid        int       `form:"updateid" json:"updateid"`
+	Updatetime      time.Time `form:"updatetime" json:"updatetime"`
 }

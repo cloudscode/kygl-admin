@@ -68,7 +68,7 @@
       </el-table-column>
       <el-table-column :label="$t('disquision.affiliation_unit')">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.affiliation_unit }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('disquision.author')">
@@ -139,92 +139,9 @@
       :dialog-form-visible="dialogFormVisible"
       :disquision-data="disquisionData"
       :thesis-types="thesisTypes"
+      @getList="getList"
+      @changeDialogFormVisible="changeDialogFormVisible"
     ></DisquisionEdit>
-    <!-- <el-dialog
-      :title="$t('user.' + textMap[dialogStatus])"
-      :visible.sync="dialogFormVisible"
-      custom-class="customDialog"
-    >
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="temp"
-        label-position="left"
-        label-width="100px"
-        style=" margin: 0 50px;"
-      >
-        <el-form-item :label="$t('disquision.thesis_type')" prop="thesis_type">
-          <el-radio-group v-model="temp.thesis_type">
-            <el-radio-button v-for="thesisType in thesisTypes" :label="thesisType.id" :key="thesisType.id" >{{ thesisType.name }}</el-radio-button >
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item :label="$t('disquision.title')" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-row type="flex" class="row-bg">
-          <el-col :span="12">
-            <el-form-item :label="$t('disquision.publication_type')" prop="publication_type">
-              <el-input v-model="temp.publication_type" ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item :label="$t('disquision.publishing_time')" prop="publishing_time">
-              <el-input v-model="temp.publishing_time" ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item :label="$t('disquision.affiliation_unit')">
-          <el-input v-model="temp.affiliation_unit" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.author')">
-          <el-input v-model="temp.author" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.public_name')">
-          <el-input v-model="temp.public_name" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.publication_level')">
-          <el-input v-model="temp.publication_level" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.publication_type')">
-          <el-input v-model="temp.publication_type" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.volume_no')">
-          <el-input v-model="temp.volume_no" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.word_length')">
-          <el-input v-model="temp.word_length" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.knowledge_class')">
-          <el-input v-model="temp.knowledge_class" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.first_knowledge')">
-          <el-input v-model="temp.first_knowledge" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.source')">
-          <el-input v-model="temp.source" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.publishing_range')">
-          <el-input v-model="temp.publishing_range" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.issn_num')">
-          <el-input v-model="temp.issn_num" />
-        </el-form-item>
-        <el-form-item :label="$t('disquision.cn_num')">
-          <el-input v-model="temp.cn_num" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="(dialogFormVisible = false), (tree_data = [])">{{
-          $t("table.cancel")
-        }}</el-button>
-        <el-button
-          type="primary"
-          @click="dialogStatus === 'create' ? createData() : updateData()"
-        >{{ $t("table.confirm") }}
-        </el-button>
-      </div>
-    </el-dialog> -->
   </div>
 </template>
 
@@ -272,22 +189,22 @@ export default {
       disquisionData: {
         id: undefined,
         title: ``,
-        affiliation_unit: ``,
-        author: ``,
-        publishing_time: ``,
-        public_name: ``,
-        thesis_type: ``,
-        publication_level: ``,
-        approval_status: ``,
-        publication_type: ``,
-        volume_no: ``,
-        word_length: ``,
-        knowledge_class: ``,
-        first_knowledge: ``,
+        orgid: ``,
+        authorname: ``,
+        publishingdate: ``,
+        publications: ``,
+        kind: `10`,
+        levels: ``,
+        flagapprove: ``,
+        period: ``,
+        volumeno: ``,
+        wordlength: ``,
+        knowledgeclass: ``,
+        firstknowledge: ``,
         source: ``,
-        publishing_range: ``,
-        issn_num: ``,
-        cn_num: ``
+        publishingrange: ``,
+        issn: ``,
+        cn: ``
       },
       dialogFormVisible: false,
       dialogStatus: `create`,
@@ -337,6 +254,9 @@ export default {
         this.listLoading = false
         // }, 1.5 * 1000)
       })
+    },
+    changeDialogFormVisible(vis) {
+      this.dialogFormVisible = vis
     },
     toSearch() {
       if (this.search_domain_id !== '') {
@@ -423,19 +343,30 @@ export default {
       this.disquisionData = {
         id: undefined,
         title: ``,
-        role_name: ``,
-        remark: ``,
-        menu_ids: [],
-        domain_id: ``,
-        thesis_type: `10`
+        orgid: ``,
+        authorname: ``,
+        publishingdate: new Date(),
+        publications: ``,
+        kind: `10`,
+        levels: ``,
+        flagapprove: ``,
+        period: ``,
+        volumeno: ``,
+        wordlength: ``,
+        knowledgeclass: ``,
+        firstknowledge: ``,
+        source: ``,
+        publishingrange: ``,
+        issn: ``,
+        cn: ``
       }
       this.domain_id = ``
     },
     handleCreate() {
       this.resetTemp()
-      this.domainlist.length > 0
-        ? (this.domain_id = this.domainlist[0].id)
-        : ``
+      // this.domainlist.length > 0
+      //   ? (this.domain_id = this.domainlist[0].id)
+      //   : ``
       // this.getPermList()
       this.dialogStatus = `create`
       this.dialogFormVisible = true
@@ -445,10 +376,12 @@ export default {
     },
 
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      // debugger
+      // console.log('****' + JSON.stringify(row) + '***')
+      this.disquisionData = Object.assign({}, row) // copy obj
+      // this.temp.timestamp = new Date(this.temp.timestamp)
+      // console.log('***' + this.disquisionData + '***')
       this.dialogStatus = `update`
-      this.domain_id = this.temp.domain.id
       this.getPermList()
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -464,11 +397,12 @@ export default {
     },
 
     handleDelete(row) {
+      this.dialogFormVisible = false
       this.$confirm(
-        `<span>删除后，拥有该角色的用户相关权限将受到影响，</span>你还要继续吗?`,
-        `删除角色`,
+        `<span>确认要删除吗？</span>`,
+        `操作提示`,
         {
-          confirmButtonText: `继续`,
+          confirmButtonText: `确认`,
           cancelButtonText: `取消`,
           type: `warning`,
           dangerouslyUseHTMLString: true

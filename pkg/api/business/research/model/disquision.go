@@ -18,15 +18,18 @@ type Disquision struct {
 	Publishingrange string    `json:"publishingrange" xorm:"VARCHAR(16)"`
 	Issn            string    `json:"issn" xorm:"VARCHAR(64)"`
 	Cn              string    `json:"cn" xorm:"VARCHAR(64)"`
-	Orgid           int       `json:"orgid" xorm:"INT(11)"`
 	Authorname      string    `json:"authorname" xorm:"VARCHAR(256)"`
 	Flagapprove     int       `json:"flagapprove" xorm:"INT(11)"`
-	Sysemplid       int       `json:"sysemplid" xorm:"not null INT(11)"`
-	Sysdatetime     time.Time `json:"sysdatetime" xorm:"not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 	Flagschool      int       `json:"flagschool" xorm:"INT(11)"`
 	Approvecomments string    `json:"approvecomments" xorm:"VARCHAR(500)"`
 	Systemtype      int       `json:"systemtype" xorm:"INT(11)"`
 	Disname         string    `json:"disname" xorm:"VARCHAR(100)"`
+	Orgid           int       `json:"orgid" xorm:"INT(11)"`
+	Deptid          int       `json:"deptid" xorm:"INT(11)"`
+	Createid        int       `json:"createid" xorm:"INT(11)"`
+	Createtime      time.Time `json:"createtime" xorm:"not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
+	Updateid        int       `json:"updateid" xorm:"INT(11)"`
+	Updatetime      time.Time `json:"updatetime" xorm:"not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 }
 
 func (Disquision) TableName() string {
@@ -50,13 +53,14 @@ type DisquisionEntity struct {
 	Publishingrange string    `json:"publishingrange" xorm:"VARCHAR(16)"`
 	Issn            string    `json:"issn" xorm:"VARCHAR(64)"`
 	Cn              string    `json:"cn" xorm:"VARCHAR(64)"`
-	Orgid           int       `json:"orgid" xorm:"INT(11)"`
 	Authorname      string    `json:"authorname" xorm:"VARCHAR(256)"`
 	Flagapprove     int       `json:"flagapprove" xorm:"INT(11)"`
-	Sysemplid       int       `json:"sysemplid" xorm:"not null INT(11)"`
-	Sysdatetime     time.Time `json:"sysdatetime" xorm:"not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 	Flagschool      int       `json:"flagschool" xorm:"INT(11)"`
 	Approvecomments string    `json:"approvecomments" xorm:"VARCHAR(500)"`
 	Systemtype      int       `json:"systemtype" xorm:"INT(11)"`
 	Disname         string    `json:"disname" xorm:"VARCHAR(100)"`
+	Orgid           int       `json:"orgid" xorm:"INT(11)"`
+	Deptid          int       `json:"deptid" xorm:"INT(11)"`
+	Updateid        int       `json:"updateid" xorm:"INT(11)"`
+	Updatetime      time.Time `json:"updatetime" xorm:"not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 }

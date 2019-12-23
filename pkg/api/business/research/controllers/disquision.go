@@ -47,6 +47,7 @@ func (r *DisquisionController) List(c *gin.Context) {
 func (u *DisquisionController) Create(c *gin.Context) {
 	var userDto dto.DisquisionCreateDto
 	if u.BindAndValidate(c, &userDto) {
+		log.Info(fmt.Sprintf("%#v", userDto))
 		user, err := disquisionService.Create(userDto)
 		if err != nil {
 			baseController.Fail(c, baseController.ErrInputData)

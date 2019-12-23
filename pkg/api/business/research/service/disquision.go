@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"zeus/pkg/api/business/research/dao"
 	"zeus/pkg/api/business/research/dto"
 	"zeus/pkg/api/business/research/model"
@@ -26,6 +27,7 @@ func (us DisquisionService) Create(userDto dto.DisquisionCreateDto) (*model.Disq
 
 	userModel := model.Disquision{}
 	copier.Copy(&userModel, &userDto)
+	log.Info(fmt.Sprintf("create > %#v", &userModel))
 	c := disquisionDao.Create(&userModel)
 	if c.Error != nil {
 		log.Error(c.Error.Error())
@@ -36,9 +38,12 @@ func (us DisquisionService) Create(userDto dto.DisquisionCreateDto) (*model.Disq
 
 // Update - update Disquision information
 func (us DisquisionService) Update(userDto dto.DisquisionEditDto) int64 {
-	userModel := model.Disquision{
-		Id: userDto.Id,
-	}
+	// userModel := model.Disquision{
+	// 	Id: userDto.Id,
+	// }
+	userModel := model.Disquision{}
+	copier.Copy(&userModel, &userDto)
+	log.Info(fmt.Sprintf("Update > %#v", &userModel))
 	c := disquisionDao.Update(&userModel, map[string]interface{}{})
 
 	return c.RowsAffected

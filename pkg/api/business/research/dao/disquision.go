@@ -48,7 +48,7 @@ func (u Disquision) Create(disquision *model.Disquision) *gorm.DB {
 // Update - update Disquision
 func (u Disquision) Update(disquision *model.Disquision, ups map[string]interface{}) *gorm.DB {
 	db := baseDao.GetDb()
-	return db.Model(disquision).Update(ups)
+	return db.Model(disquision).Update(disquision)
 }
 
 // Delete - delete Disquision
