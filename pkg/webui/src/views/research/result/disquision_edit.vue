@@ -172,10 +172,10 @@ export default {
   },
   methods: {
     createData() {
-      // console.log(this.disquisionData)
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.disquisionData.publishingdate = +new Date(this.disquisionData.publishingdate)
+          console.log('****' + JSON.stringify(this.disquisionData) + '***')
           createDisquision(this.disquisionData)
             .then(() => {
               // this.getList()

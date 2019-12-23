@@ -46,6 +46,7 @@ func (r *DisquisionController) List(c *gin.Context) {
 // @Router /v1/users?limit=20&offset=0 [get]
 func (u *DisquisionController) Create(c *gin.Context) {
 	var userDto dto.DisquisionCreateDto
+	log.Info(fmt.Sprintf("%#v", c))
 	if u.BindAndValidate(c, &userDto) {
 		log.Info(fmt.Sprintf("%#v", userDto))
 		user, err := disquisionService.Create(userDto)

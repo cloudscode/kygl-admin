@@ -17,7 +17,7 @@ type DisquisionCreateDto struct {
 	Levels          string    `form:"levels" json:"levels"`
 	Volumeno        string    `form:"volumeno" json:"volumeno"`
 	Period          string    `form:"period" json:"period"`
-	Publishingdate  time.Time `form:"publishingdate" json:"publishingdate"`
+	Publishingdate  time.Time `type(datetime)" form:"publishingdate" json:"publishingdate"`
 	Wordlength      float32   `form:"wordlength" json:"wordlength"`
 	Knowledgeclass  string    `form:"knowledgeclass" json:"knowledgeclass"`
 	Firstknowledge  string    `form:"firstknowledge" json:"firstknowledge"`
@@ -34,9 +34,9 @@ type DisquisionCreateDto struct {
 	Orgid           int       `form:"orgid" json:"orgid"`
 	Deptid          int       `form:"deptid" json:"deptid"`
 	Createid        int       `form:"createid" json:"createid"`
-	Createtime      time.Time `form:"createtime" json:"createtime"`
+	Createtime      time.Time `type(datetime)" form:"createtime" json:"createtime"`
 	Updateid        int       `form:"updateid" json:"updateid"`
-	Updatetime      time.Time `form:"updatetime" json:"updatetime"`
+	Updatetime      time.Time `type(datetime)" form:"updatetime" json:"updatetime"`
 }
 
 // DisquisionEditDto - dto for disquision modification
